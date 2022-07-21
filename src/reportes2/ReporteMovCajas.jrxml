@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="60d2c003-e173-4246-b5ac-8d8b9888d193">
+	<property name="ireport.zoom" value="1.4641000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="producsys"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="217"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="776"/>
+	<parameter name="fecha_inicio" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fecha_fin" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="hora_inicio" class="java.lang.String"/>
+	<parameter name="hora_fin" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT ac.id AS numero_apertura,ac.fecha_aper AS fecha_apertura,ac.hora_aper AS hora_apertura,
+ac.id_caja AS caja, ac.monto_aper AS monto_apertura,ac.fecha_cierre AS fecha_cierre,ac.hora_cierre AS hora_cierre,
+ac.monto_cierre AS monto_cierre, a.fecha AS fecha_arqueo,a.hora AS hora_arqueo, a.efectivo AS importe_rendido,
+(ac.monto_cierre - a.efectivo) AS Diferencia
+FROM aper_cierre ac 
+INNER JOIN arqueo a ON a.aper_cod = ac.id
+WHERE 
+CONCAT(ac.fecha_cierre,' ',ac.hora_cierre) BETWEEN CONCAT( $P{fecha_inicio},' ',$P{hora_inicio} ) AND CONCAT( $P{fecha_fin} ,' ', $P{hora_fin} )]]>
+	</queryString>
+	<field name="numero_apertura" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="numero_apertura"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="aper_cierre"/>
+	</field>
+	<field name="fecha_apertura" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.label" value="fecha_apertura"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="aper_cierre"/>
+	</field>
+	<field name="hora_apertura" class="java.sql.Time">
+		<property name="com.jaspersoft.studio.field.label" value="hora_apertura"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="aper_cierre"/>
+	</field>
+	<field name="caja" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="caja"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="aper_cierre"/>
+	</field>
+	<field name="monto_apertura" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="monto_apertura"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="aper_cierre"/>
+	</field>
+	<field name="fecha_cierre" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.label" value="fecha_cierre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="aper_cierre"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="hora_cierre" class="java.sql.Time">
+		<property name="com.jaspersoft.studio.field.label" value="hora_cierre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="aper_cierre"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="monto_cierre" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="monto_cierre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="aper_cierre"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fecha_arqueo" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.label" value="fecha_arqueo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueo"/>
+	</field>
+	<field name="hora_arqueo" class="java.sql.Time">
+		<property name="com.jaspersoft.studio.field.label" value="hora_arqueo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueo"/>
+	</field>
+	<field name="importe_rendido" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="importe_rendido"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="arqueo"/>
+	</field>
+	<field name="Diferencia" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="Diferencia"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="10" width="555" height="69" forecolor="#009999" backcolor="#99FFFF" uuid="6d3c1f5e-5eb7-46b4-8062-088ac9ea997b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="44"/>
+				</textElement>
+				<text><![CDATA[Reporte Movimiento Cajas]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="24" splitType="Stretch">
+			<staticText>
+				<reportElement x="59" y="0" width="64" height="20" uuid="2243e26c-0dd9-4b46-be7b-8f8691769c37"/>
+				<text><![CDATA[Fecha desde:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="123" y="0" width="100" height="20" uuid="7a605178-d056-42b7-9126-78cd58119bfd"/>
+				<textFieldExpression><![CDATA[$P{fecha_inicio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="266" y="0" width="62" height="20" uuid="d434e70a-35dc-42ee-a6e3-970d9c5ac380"/>
+				<text><![CDATA[Fecha Hasta:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="328" y="0" width="100" height="20" uuid="0d95b1ef-b3ed-4cef-934b-2b538814276f"/>
+				<textFieldExpression><![CDATA[$P{fecha_fin}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="26" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="40" height="26" forecolor="#FFFFFF" backcolor="#006666" uuid="8381cba8-de34-491e-9245-3badfe79a157"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Nro Apertura]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="40" y="0" width="44" height="26" forecolor="#FFFFFF" backcolor="#006666" uuid="f9e656da-3a41-4245-99df-03c194ff4bdb"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Fecha Apertura	]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="84" y="0" width="39" height="26" forecolor="#FFFFFF" backcolor="#006666" uuid="c9744ab3-6944-418f-bd54-4d8026a41979"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Hora Apertura]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="123" y="0" width="32" height="26" forecolor="#FFFFFF" backcolor="#006666" uuid="988b5836-5d94-48ab-b3c8-58397b7cf1ce"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Nro Caja]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="155" y="0" width="54" height="26" forecolor="#FFFFFF" backcolor="#006666" uuid="84d609ba-a5de-4c81-9bdc-6048a99ebc67"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Monto Apertura]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="209" y="0" width="50" height="26" forecolor="#FFFFFF" backcolor="#006666" uuid="cbad2093-314b-450d-b47a-241d64d86993"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Fecha Cierre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="259" y="0" width="40" height="26" forecolor="#FFFFFF" backcolor="#006666" uuid="a8600b33-202a-4383-a37f-7f3067fda24a"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Hora Cierre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="299" y="0" width="50" height="26" forecolor="#FFFFFF" backcolor="#006666" uuid="eb192a15-0966-4b99-8b25-c480ca85e3cd"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Monto Cierre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="399" y="0" width="50" height="26" forecolor="#FFFFFF" backcolor="#006666" uuid="55a35280-ade6-4fb7-afe5-31c164c23fa7"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Hora Arqueo ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="449" y="0" width="55" height="26" forecolor="#FFFFFF" backcolor="#006666" uuid="55db3a91-f3ae-46bb-82aa-46715d9589d8"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Importe Arqueo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="349" y="0" width="50" height="26" forecolor="#FFFFFF" backcolor="#006666" uuid="29afddb7-eae3-49ce-9c3a-ce40234bf1a7"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Fecha Arqueo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="504" y="0" width="51" height="26" forecolor="#FFFFFF" backcolor="#006666" uuid="81c153ef-4e4d-481f-83e5-62671ba3ddc9"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Diferencia]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="40" height="20" uuid="3bfdbe8b-8259-4741-9b4b-0c67fcdce07a"/>
+				<box leftPadding="0">
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{numero_apertura}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yy">
+				<reportElement x="40" y="0" width="44" height="20" uuid="bb091986-d24b-4e0d-ab14-3a39d1addcc8"/>
+				<box leftPadding="0">
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fecha_apertura}]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH.mm">
+				<reportElement x="84" y="0" width="39" height="20" uuid="fbf41a61-c173-4497-8489-46460d8f3954"/>
+				<box leftPadding="0">
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{hora_apertura}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="0" width="32" height="20" uuid="fd8998a8-625a-497b-a49d-3e09a9770b6f"/>
+				<box leftPadding="0">
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{caja}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="155" y="0" width="54" height="20" uuid="17e6c0a2-09dd-445f-ba1a-fd398f5564b7"/>
+				<box leftPadding="0">
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{monto_apertura}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yy">
+				<reportElement x="209" y="0" width="50" height="20" uuid="17c35b50-7752-4277-845b-8792b8303274"/>
+				<box leftPadding="0">
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fecha_cierre}]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH.mm">
+				<reportElement x="259" y="0" width="40" height="20" uuid="a37f7e5b-257f-4c2a-8776-b2e39a470529"/>
+				<box leftPadding="0">
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{hora_cierre}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="299" y="0" width="50" height="20" uuid="781f77ad-1f17-427c-a89c-3f4720f3a9aa"/>
+				<box leftPadding="0">
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{monto_cierre}]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH.mm">
+				<reportElement x="399" y="0" width="50" height="20" uuid="0d9f8933-d906-4064-8713-0291b60bf711"/>
+				<box leftPadding="0">
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{hora_arqueo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="449" y="0" width="55" height="20" uuid="6786de82-70d0-4542-81d1-9556a8aafa9f"/>
+				<box leftPadding="0">
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{importe_rendido}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yy">
+				<reportElement x="349" y="0" width="50" height="20" uuid="20de5a92-ea26-4b0e-92cd-cfe556846cb9"/>
+				<box leftPadding="0">
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fecha_arqueo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="504" y="0" width="51" height="20" uuid="d65f0406-6b8f-41e9-aca6-8eae0776e9d9"/>
+				<box leftPadding="0">
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Diferencia}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement x="462" y="0" width="95" height="20" uuid="96cd7706-8885-41be-a13a-c64ba4dbe315"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="370" y="0" width="92" height="20" uuid="e6395a78-a11f-4a1d-bd75-3ebca1927735"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Pag. Nro.]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

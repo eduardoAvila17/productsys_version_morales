@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="IMPORTE_INGRESADO" class="java.lang.Number">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="VUELTO" class="java.lang.Number">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT CV.ID AS NUMERO_VENTA,
+U.USU_NOMB AS CAJERO,
+CV.FECHA AS FECHA,
+CV.HORA,
+DV.BARRA_PRODUCTO AS EAN,
+P.DESCRIPCION AS PRODUCTO,
+DV.CANTIDAD AS CANT,
+DV.PRECIO_UNIT AS PRECIO,
+DV.IMPORTE_BRUTO AS TOTAL_ART,
+CV.VENTA_TOTAL AS TOTAL,
+SU.EMPRESA,
+SU.SLOGAN,
+CV.NUMERO_CAJA,
+ $P{IMPORTE_INGRESADO}  AS INGRESADO,
+  $P{VUELTO} AS VUELTO 
+FROM CABECERA_VENTAS CV 
+INNER JOIN DETALLE_VENTAS DV ON DV.ID_CABECERA = CV.ID
+INNER JOIN PRODUCTO P ON P.PRD_COD = DV.ID_PRODUCTO 
+INNER JOIN USUARIO U ON U.USU_COD = USUARIO
+INNER JOIN SUCURSAL SU ON SU.SUC_COD = CV.ID_LOCAL
+WHERE CV.ID =70]]>
+	</queryString>
+	<field name="NUMERO_VENTA" class="java.lang.Integer"/>
+	<field name="CAJERO" class="java.lang.String"/>
+	<field name="FECHA" class="java.lang.String"/>
+	<field name="HORA" class="java.lang.String"/>
+	<field name="EAN" class="java.lang.Long"/>
+	<field name="PRODUCTO" class="java.lang.String"/>
+	<field name="CANT" class="java.lang.Float"/>
+	<field name="PRECIO" class="java.lang.Integer"/>
+	<field name="TOTAL_ART" class="java.lang.Integer"/>
+	<field name="TOTAL" class="java.lang.Integer"/>
+	<field name="EMPRESA" class="java.lang.String"/>
+	<field name="SLOGAN" class="java.lang.String"/>
+	<field name="NUMERO_CAJA" class="java.lang.Integer"/>
+	<field name="INGRESADO" class="java.lang.Object"/>
+	<field name="VUELTO" class="java.lang.Object"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="555" height="79"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{EMPRESA}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
