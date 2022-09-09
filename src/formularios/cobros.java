@@ -1114,8 +1114,8 @@ public class cobros extends javax.swing.JFrame {
                 }
 
             }
-            generarArchivo();
-            // generarTicketVenta();
+            //generarArchivo();
+             generarTicketVenta();
             //   JOptionPane.showMessageDialog(null, "REGISTRO GRABADO", "CONFIRMACION", JOptionPane.INFORMATION_MESSAGE);
 
             gencod();

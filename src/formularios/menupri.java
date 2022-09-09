@@ -154,7 +154,7 @@ public class menupri extends javax.swing.JFrame {
         usucodigo.setText("Cod.");
 
         jLabel1.setBackground(new java.awt.Color(204, 255, 255));
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/graficos/morales_2.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/san jose(5).png"))); // NOI18N
 
         jMenuBar1.setBackground(new java.awt.Color(0, 0, 0));
 
