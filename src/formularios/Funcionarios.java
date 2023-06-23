@@ -580,6 +580,8 @@ public class Funcionarios extends javax.swing.JFrame {
     private void cargocodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargocodActionPerformed
         // TODO add your handling code here:
         buscar_cargo();
+        nombres.setEnabled(true);
+        nombres.requestFocus();
     
     }//GEN-LAST:event_cargocodActionPerformed
 

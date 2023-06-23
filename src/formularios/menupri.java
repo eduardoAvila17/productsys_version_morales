@@ -9,7 +9,7 @@
  * Created on 17-sep-2013, 18:18:41
  */
 package formularios;
-
+// 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
@@ -39,7 +39,7 @@ public class menupri extends javax.swing.JFrame {
         time.start();
         String codUser = acceso.usucod;
         usucodigo.setText(acceso.usucod);
-        
+
     }
 
     class escucha implements ActionListener {
@@ -106,6 +106,7 @@ public class menupri extends javax.swing.JFrame {
         jMenu6 = new javax.swing.JMenu();
         jMenuItem26 = new javax.swing.JMenuItem();
         jMenuItem27 = new javax.swing.JMenuItem();
+        jMenuItem28 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         itemconfirmar = new javax.swing.JMenuItem();
 
@@ -154,7 +155,7 @@ public class menupri extends javax.swing.JFrame {
         usucodigo.setText("Cod.");
 
         jLabel1.setBackground(new java.awt.Color(204, 255, 255));
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/san jose(5).png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Agregar texto.png"))); // NOI18N
 
         jMenuBar1.setBackground(new java.awt.Color(0, 0, 0));
 
@@ -342,6 +343,15 @@ public class menupri extends javax.swing.JFrame {
         });
         jMenu6.add(jMenuItem27);
 
+        jMenuItem28.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        jMenuItem28.setText("Configurar Impresion");
+        jMenuItem28.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem28ActionPerformed(evt);
+            }
+        });
+        jMenu6.add(jMenuItem28);
+
         jMenuBar1.add(jMenu6);
 
         jMenu3.setForeground(new java.awt.Color(255, 255, 255));
@@ -461,8 +471,8 @@ public class menupri extends javax.swing.JFrame {
 
     private void jMenuItem26ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem26ActionPerformed
 
-          if (acceso.usunivel.equals("1")) {
-             new ReporteInventario().setVisible(true);
+        if (acceso.usunivel.equals("1")) {
+            new ReporteInventario().setVisible(true);
         } else {
             JOptionPane.showMessageDialog(null, "USTED NO TIENE AUTORIZACION PARA UTILIZAR ESTE FORMULARIO");
             //  JOptionPane.showMessageDialog(null, "");
@@ -471,21 +481,21 @@ public class menupri extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem26ActionPerformed
 
     private void jMenuItem16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem16ActionPerformed
-   if (acceso.usunivel.equals("1") ||acceso.usunivel.equals("2")) {
-             try {
-            BuscarDatosApertura();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(menupri.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            Logger.getLogger(menupri.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(menupri.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        if (acceso.usunivel.equals("1") || acceso.usunivel.equals("2")) {
+            try {
+                BuscarDatosApertura();
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(menupri.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InstantiationException ex) {
+                Logger.getLogger(menupri.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                Logger.getLogger(menupri.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
             JOptionPane.showMessageDialog(null, "USTED NO TIENE AUTORIZACION PARA UTILIZAR ESTE FORMULARIO");
             //  JOptionPane.showMessageDialog(null, "");
         }
-      
+
 
     }//GEN-LAST:event_jMenuItem16ActionPerformed
 
@@ -505,7 +515,7 @@ public class menupri extends javax.swing.JFrame {
 
     private void jMenuItem25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem25ActionPerformed
         // TODO add your handling code here:
-        if (acceso.usunivel.equals("1")  ||acceso.usunivel.equals("2")) {
+        if (acceso.usunivel.equals("1") || acceso.usunivel.equals("2")) {
             try {
                 new apertura_cierre().setVisible(true);
             } catch (IllegalAccessException ex) {
@@ -569,7 +579,7 @@ public class menupri extends javax.swing.JFrame {
 
     private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
         // TODO add your handling code here:
-         if (acceso.usunivel.equals("1")) {
+        if (acceso.usunivel.equals("1")) {
             new Funcionarios().setVisible(true);
         } else {
             JOptionPane.showMessageDialog(null, "USTED NO TIENE AUTORIZACION PARA UTILIZAR ESTE FORMULARIO");
@@ -579,7 +589,7 @@ public class menupri extends javax.swing.JFrame {
 
     private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
         // TODO add your handling code here:
-         if (acceso.usunivel.equals("1")) {
+        if (acceso.usunivel.equals("1")) {
             new usuarios().setVisible(true);
         } else {
             JOptionPane.showMessageDialog(null, "USTED NO TIENE AUTORIZACION PARA UTILIZAR ESTE FORMULARIO");
@@ -587,21 +597,31 @@ public class menupri extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItem14ActionPerformed
 
+    private void jMenuItem27ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem27ActionPerformed
+        // TODO add your handling code here:
+
+        new ConsultaPrecios().setVisible(true);
+    }//GEN-LAST:event_jMenuItem27ActionPerformed
+
+    private void jMenuItem28ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem28ActionPerformed
+        // TODO add your handling code here:
+        if (acceso.usunivel.equals("1")) {
+            new Imprimir().setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "USTED NO TIENE AUTORIZACION PARA UTILIZAR ESTE FORMULARIO");
+            //  JOptionPane.showMessageDialog(null, "");
+        }
+    }//GEN-LAST:event_jMenuItem28ActionPerformed
+
     private void conversionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_conversionesActionPerformed
         // TODO add your handling code here:
-           if (acceso.usunivel.equals("1")) {
+        if (acceso.usunivel.equals("1")) {
             new Conversiones().setVisible(true);
         } else {
             JOptionPane.showMessageDialog(null, "USTED NO TIENE AUTORIZACION PARA UTILIZAR ESTE FORMULARIO");
             //  JOptionPane.showMessageDialog(null, "");
         }
     }//GEN-LAST:event_conversionesActionPerformed
-
-    private void jMenuItem27ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem27ActionPerformed
-        // TODO add your handling code here:
-        
-          new ConsultaPrecios().setVisible(true);
-    }//GEN-LAST:event_jMenuItem27ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -646,6 +666,7 @@ public class menupri extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem25;
     private javax.swing.JMenuItem jMenuItem26;
     private javax.swing.JMenuItem jMenuItem27;
+    private javax.swing.JMenuItem jMenuItem28;
     private javax.swing.JMenuItem jMenuItem29;
     private javax.swing.JMenuItem jMenuItem30;
     private javax.swing.JMenuItem jMenuItem7;
@@ -742,10 +763,10 @@ public class menupri extends javax.swing.JFrame {
         {
             ver_conex conn = new ver_conex();//instanciamos
             conn.sentencia = conn.conexion.createStatement();
-            conn.resultado = conn.sentencia.executeQuery("SELECT COALESCE(COUNT(id),0) AS cantidad_apertura\n" +
-"                   FROM aper_cierre\n" +
-"                   WHERE estado = 2\n" +
-"                   AND usu_cod = "+usucodigo.getText()+""); //OJO LE PASO LA SENTENCIA
+            conn.resultado = conn.sentencia.executeQuery("SELECT COALESCE(COUNT(id),0) AS cantidad_apertura\n"
+                    + "                   FROM aper_cierre\n"
+                    + "                   WHERE estado = 2\n"
+                    + "                   AND usu_cod = " + usucodigo.getText() + ""); //OJO LE PASO LA SENTENCIA
             conn.resultado.next();
             // usucodigo = conn.resultado.getString("usu_cod");
             verificador = conn.resultado.getString("cantidad_apertura");
@@ -753,15 +774,15 @@ public class menupri extends javax.swing.JFrame {
             if (verificador.equals("0")) {
 
                 JOptionPane.showMessageDialog(null, "Debe realizar una Apertura para poder habilitar Cobros");
-                
+
                 int res = javax.swing.JOptionPane.showOptionDialog(this,
-                "Desea realizar la apertura de una caja?", "Sistema", javax.swing.JOptionPane.OK_CANCEL_OPTION,
-                javax.swing.JOptionPane.QUESTION_MESSAGE, null,
-                new Object[]{"Si", "No"}, "Si");
-                 if (res == javax.swing.JOptionPane.OK_OPTION) {
-                       new apertura_cierre().setVisible(true);
-                 }
-          
+                        "Desea realizar la apertura de una caja?", "Sistema", javax.swing.JOptionPane.OK_CANCEL_OPTION,
+                        javax.swing.JOptionPane.QUESTION_MESSAGE, null,
+                        new Object[]{"Si", "No"}, "Si");
+                if (res == javax.swing.JOptionPane.OK_OPTION) {
+                    new apertura_cierre().setVisible(true);
+                }
+
             } else {
 
                 new cobros().setVisible(true);
@@ -772,5 +793,4 @@ public class menupri extends javax.swing.JFrame {
         }
     }
 
-  
 }

@@ -475,7 +475,7 @@ public class CostoArticulo extends javax.swing.JFrame {
         {
             JTextField[] tfParam = new JTextField[2];
             tfParam[0] = this.txtbarra;
-            VentanaBuscar buscador = new VentanaBuscar("SELECT BARRA,UPPER(descripcion)AS descripcion\n"
+            VentanaBuscar buscador = new VentanaBuscar("SELECT BARRA, concat(UPPER(descripcion), '  -  ' , precio_venta) AS descripcion \n"
                     + "FROM producto where descripcion like  ", new String[]{"CODIGO PRODUCTO", "NOMBRE PRODUCTO"}, 2, tfParam);
             buscador.setTitle("Buscar PRODUCTOS");
             buscador.setVisible(true);

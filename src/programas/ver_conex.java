@@ -1,7 +1,7 @@
 package programas;
 
 import formularios.acceso;
-
+import formularios.menupri;
 import java.sql.*;
 import javax.swing.*;
 
@@ -46,7 +46,7 @@ public class ver_conex
     public boolean ejecurarConsulta(String query){
     //throw new UnsupportedOperationException("Not yet implemented");
     try {
-     sentencia=conexion.createStatement();
+        sentencia=conexion.createStatement();
      resultado=sentencia.executeQuery(query);
   return true;
     }

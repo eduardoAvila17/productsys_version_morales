@@ -1,5 +1,8 @@
 package formularios;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +16,20 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import programas.ver_conex;
-import java.nio.file.*;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.SQLException;
+import javax.swing.JFileChooser;
+import javax.swing.JTable;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 /**
  *
@@ -23,6 +39,11 @@ public class ReporteInventario extends javax.swing.JFrame {
 
     public ResultSet rs;
     private java.sql.ResultSet rss;
+
+    javax.swing.table.DefaultTableModel cursor;
+    javax.swing.table.DefaultTableModel cursor_ventas;
+    javax.swing.table.DefaultTableModel cursor_cajas;
+    javax.swing.table.DefaultTableModel cursor_compras;
 
     final String nombreArchivoInventario = "\\reportes2\\Inventario.jasper";
     Path rutaRelativaInventario = Paths.get(nombreArchivoInventario);
@@ -36,14 +57,21 @@ public class ReporteInventario extends javax.swing.JFrame {
     Path rutaRelativaVentas = Paths.get(NombreArchivoVentas);
     Path rutaAbsolutaVentas = rutaRelativaVentas.toAbsolutePath();
 
+    javax.swing.table.DefaultTableModel m;
+
     /**
      * Creates new form ReporteInventario
      */
     public ReporteInventario() {
         initComponents();
         ver_conex conn = new ver_conex();
-        this.setLocationRelativeTo(null);
 
+        this.setLocationRelativeTo(null);
+        cursor = (javax.swing.table.DefaultTableModel) grilla_2.getModel();
+        cursor_ventas = (javax.swing.table.DefaultTableModel) grilla_ventas.getModel();
+        cursor_cajas = (javax.swing.table.DefaultTableModel) grilla_cajas.getModel();
+        cursor_compras = (javax.swing.table.DefaultTableModel) grilla_compras.getModel();
+// cargar_grilla();
     }
 
     /**
@@ -76,6 +104,17 @@ public class ReporteInventario extends javax.swing.JFrame {
         radioVentas = new javax.swing.JRadioButton();
         radioCajas = new javax.swing.JRadioButton();
         radioCompras = new javax.swing.JRadioButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        grilla_inventario = new javax.swing.JTable();
+        btx_exp_excel = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        grilla_2 = new javax.swing.JTable();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        grilla_cajas = new javax.swing.JTable();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        grilla_ventas = new javax.swing.JTable();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        grilla_compras = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -101,6 +140,7 @@ public class ReporteInventario extends javax.swing.JFrame {
         );
 
         jBgenerar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/search_locate_find_icon-icons.com_67287.png"))); // NOI18N
+        jBgenerar.setEnabled(false);
         jBgenerar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBgenerarActionPerformed(evt);
@@ -166,6 +206,7 @@ public class ReporteInventario extends javax.swing.JFrame {
         });
 
         rbTodos.setText("Todos");
+        rbTodos.setEnabled(false);
         rbTodos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rbTodosActionPerformed(evt);
@@ -173,6 +214,7 @@ public class ReporteInventario extends javax.swing.JFrame {
         });
 
         rbMenor10.setText("Menor a 10");
+        rbMenor10.setEnabled(false);
         rbMenor10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rbMenor10ActionPerformed(evt);
@@ -188,6 +230,11 @@ public class ReporteInventario extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(rbTodos)
+                            .addComponent(rbMenor10))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
                             .addComponent(jLabel2))
                         .addGap(26, 26, 26)
@@ -198,12 +245,7 @@ public class ReporteInventario extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(fhasta, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
                             .addComponent(fdesde, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE))
-                        .addGap(17, 17, 17))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(rbTodos)
-                            .addComponent(rbMenor10))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGap(17, 17, 17))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -318,47 +360,280 @@ public class ReporteInventario extends javax.swing.JFrame {
                 .addComponent(radioCajas)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(radioCompras, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(65, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        grilla_inventario.setBackground(new java.awt.Color(153, 255, 255));
+        grilla_inventario.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Id", "Codigo  Barra", "Producto", "Costo", "Precio Venta", "Disponible"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        grilla_inventario.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                grilla_inventarioAncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+        grilla_inventario.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                grilla_inventarioMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(grilla_inventario);
+        if (grilla_inventario.getColumnModel().getColumnCount() > 0) {
+            grilla_inventario.getColumnModel().getColumn(0).setResizable(false);
+            grilla_inventario.getColumnModel().getColumn(1).setResizable(false);
+            grilla_inventario.getColumnModel().getColumn(2).setResizable(false);
+            grilla_inventario.getColumnModel().getColumn(3).setResizable(false);
+            grilla_inventario.getColumnModel().getColumn(4).setResizable(false);
+            grilla_inventario.getColumnModel().getColumn(5).setResizable(false);
+        }
+
+        btx_exp_excel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/sobresalir.png"))); // NOI18N
+        btx_exp_excel.setEnabled(false);
+        btx_exp_excel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btx_exp_excelActionPerformed(evt);
+            }
+        });
+
+        grilla_2.setBackground(new java.awt.Color(153, 255, 255));
+        grilla_2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Id", "Codigo  Barra", "Descripcion", "Costo", "Precio Venta", "Estado"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        grilla_2.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                grilla_2AncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+        grilla_2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                grilla_2MouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(grilla_2);
+
+        grilla_cajas.setBackground(new java.awt.Color(153, 255, 255));
+        grilla_cajas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Nro Apertura", "Fecha Apertura", "Hora Apertura", "Caja", "Monto Apertura", "Fecha Cierre ", "Hora Cierre", "Monto Cierre", "Fecha Arqueo", "Hora Arqueo", "Importe Rendido", "Diferencia"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, true, true, true, true, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        grilla_cajas.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                grilla_cajasAncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+        grilla_cajas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                grilla_cajasMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(grilla_cajas);
+
+        grilla_ventas.setBackground(new java.awt.Color(153, 255, 255));
+        grilla_ventas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Codigo Barra", "Descripcion", "Cantidad Vendida", "Costo", "Costo Total", "Precio Unitario", "Importe de Venta Total", "Ganancia"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        grilla_ventas.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                grilla_ventasAncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+        grilla_ventas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                grilla_ventasMouseClicked(evt);
+            }
+        });
+        jScrollPane4.setViewportView(grilla_ventas);
+        if (grilla_ventas.getColumnModel().getColumnCount() > 0) {
+            grilla_ventas.getColumnModel().getColumn(0).setResizable(false);
+            grilla_ventas.getColumnModel().getColumn(1).setResizable(false);
+            grilla_ventas.getColumnModel().getColumn(2).setResizable(false);
+            grilla_ventas.getColumnModel().getColumn(3).setResizable(false);
+            grilla_ventas.getColumnModel().getColumn(4).setResizable(false);
+            grilla_ventas.getColumnModel().getColumn(5).setResizable(false);
+            grilla_ventas.getColumnModel().getColumn(6).setResizable(false);
+            grilla_ventas.getColumnModel().getColumn(7).setResizable(false);
+        }
+
+        grilla_compras.setBackground(new java.awt.Color(153, 255, 255));
+        grilla_compras.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Fecha", "Hora", "Codigo de Barras", "Producto", "Costo", "Cantidad", "Costo Total"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        grilla_compras.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                grilla_comprasAncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+        grilla_compras.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                grilla_comprasMouseClicked(evt);
+            }
+        });
+        jScrollPane5.setViewportView(grilla_compras);
+        if (grilla_compras.getColumnModel().getColumnCount() > 0) {
+            grilla_compras.getColumnModel().getColumn(0).setResizable(false);
+            grilla_compras.getColumnModel().getColumn(1).setResizable(false);
+            grilla_compras.getColumnModel().getColumn(2).setResizable(false);
+            grilla_compras.getColumnModel().getColumn(3).setResizable(false);
+            grilla_compras.getColumnModel().getColumn(4).setResizable(false);
+            grilla_compras.getColumnModel().getColumn(6).setResizable(false);
+        }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(116, 116, 116)
-                        .addComponent(jBgenerar, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(87, 87, 87))
+                .addContainerGap(20, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(22, 22, 22)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(24, Short.MAX_VALUE))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jBgenerar, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGap(38, 38, 38)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btx_exp_excel, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(45, 45, 45))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(15, 15, 15)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btx_exp_excel, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jBgenerar, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jBgenerar, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 6, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(67, Short.MAX_VALUE))
         );
 
         pack();
@@ -369,7 +644,27 @@ public class ReporteInventario extends javax.swing.JFrame {
         if (radioVentas.isSelected()) {
             bandera = "Ventas";
             radioInventario.setSelected(false);
+            radioCompras.setSelected(false);
             radioCajas.setSelected(false);
+            rbTodos.setSelected(false);
+            rbMenor10.setSelected(false);
+            rbTodos.setEnabled(false);
+            rbMenor10.setEnabled(false);
+            jr_fecha.setEnabled(true);
+            jr_fecha.setSelected(false);
+            tdesde.setEnabled(false);
+            
+            jBgenerar.setEnabled(false);
+            btx_exp_excel.setEnabled(false);
+            tdesde.setText("");
+            thasta.setText("");
+            fdesde.setText("");
+            fhasta.setText("");
+            
+            fdesde.setEnabled(false);
+            fhasta.setEnabled(false);
+            tdesde.setEnabled(false);
+            thasta.setEnabled(false);
         }
     }//GEN-LAST:event_radioVentasActionPerformed
 
@@ -381,7 +676,7 @@ public class ReporteInventario extends javax.swing.JFrame {
                 dispose();
             } else if (rbMenor10.isSelected()) {
                 generarInformeStockMenor10();
-                dispose();
+                // dispose();
             }
         }
         if (bandera == "Ventas" && fechas == "SI") {
@@ -406,7 +701,22 @@ public class ReporteInventario extends javax.swing.JFrame {
             radioVentas.setSelected(false);
             radioCajas.setSelected(false);
             radioCompras.setSelected(false);
-            jr_fecha.setEnabled(true);
+            jr_fecha.setEnabled(false);
+            jr_fecha.setSelected(false);
+            rbTodos.setEnabled(true);
+            rbMenor10.setEnabled(true);
+            
+            jBgenerar.setEnabled(false);
+            btx_exp_excel.setEnabled(false);
+            tdesde.setText("");
+            thasta.setText("");
+            fdesde.setText("");
+            fhasta.setText("");
+            
+            fdesde.setEnabled(false);
+            fhasta.setEnabled(false);
+            tdesde.setEnabled(false);
+            thasta.setEnabled(false);
         }
 
     }//GEN-LAST:event_radioInventarioActionPerformed
@@ -438,7 +748,6 @@ public class ReporteInventario extends javax.swing.JFrame {
         tdesde.setText("");
         thasta.setText("");
         tdesde.setEnabled(true);
-        thasta.setEnabled(true);
         tdesde.requestFocus();
         //    jr_todos.setSelected(false);
     }//GEN-LAST:event_jr_fechaActionPerformed
@@ -451,11 +760,32 @@ public class ReporteInventario extends javax.swing.JFrame {
             radioVentas.setSelected(false);
             radioCompras.setSelected(false);
             jr_fecha.setEnabled(true);
+            rbTodos.setSelected(false);
+            rbMenor10.setSelected(false);
+            rbTodos.setEnabled(false);
+            rbMenor10.setEnabled(false);
+            tdesde.setEnabled(false);
+            jr_fecha.setSelected(false);
+            
+            jBgenerar.setEnabled(false);
+            btx_exp_excel.setEnabled(false);
+            tdesde.setText("");
+            thasta.setText("");
+            fdesde.setText("");
+            fhasta.setText("");
+            
+            fdesde.setEnabled(false);
+            fhasta.setEnabled(false);
+            tdesde.setEnabled(false);
+            thasta.setEnabled(false);
         }
     }//GEN-LAST:event_radioCajasActionPerformed
 
     private void fhastaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fhastaActionPerformed
         // TODO add your handling code here:
+        jBgenerar.setEnabled(true);
+        btx_exp_excel.setEnabled(true);
+        
     }//GEN-LAST:event_fhastaActionPerformed
 
     private void fdesdeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fdesdeActionPerformed
@@ -472,10 +802,21 @@ public class ReporteInventario extends javax.swing.JFrame {
 
     private void rbTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbTodosActionPerformed
         // TODO add your handling code here:
+        if (rbTodos.isSelected()) {
+            rbMenor10.setSelected(false);
+            jBgenerar.setEnabled(true);
+            btx_exp_excel.setEnabled(true);
+        }
+
     }//GEN-LAST:event_rbTodosActionPerformed
 
     private void rbMenor10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbMenor10ActionPerformed
         // TODO add your handling code here:
+        if (rbMenor10.isSelected()) {
+            rbTodos.setSelected(false);
+            jBgenerar.setEnabled(true);
+            btx_exp_excel.setEnabled(true);
+        }
     }//GEN-LAST:event_rbMenor10ActionPerformed
 
     private void radioComprasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioComprasActionPerformed
@@ -486,8 +827,99 @@ public class ReporteInventario extends javax.swing.JFrame {
             radioVentas.setSelected(false);
             radioCajas.setSelected(false);
             jr_fecha.setEnabled(true);
+            rbTodos.setSelected(false);
+            rbMenor10.setSelected(false);
+            rbTodos.setEnabled(false);
+            rbMenor10.setEnabled(false);
+            tdesde.setEnabled(false);
+            jr_fecha.setSelected(false);
+            
+            jBgenerar.setEnabled(false);
+            btx_exp_excel.setEnabled(false);
+            tdesde.setText("");
+            thasta.setText("");
+            fdesde.setText("");
+            fhasta.setText("");
+            
+            fdesde.setEnabled(false);
+            fhasta.setEnabled(false);
+            tdesde.setEnabled(false);
+            thasta.setEnabled(false);
         }
     }//GEN-LAST:event_radioComprasActionPerformed
+
+    private void grilla_inventarioAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_grilla_inventarioAncestorAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_grilla_inventarioAncestorAdded
+
+    private void grilla_inventarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_grilla_inventarioMouseClicked
+        // TODO add your handling code here:}
+    }//GEN-LAST:event_grilla_inventarioMouseClicked
+
+    private void btx_exp_excelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btx_exp_excelActionPerformed
+
+        try {
+
+            if (bandera == "Inventario") {
+                cargar_grilla();
+                exportarExcel(grilla_2);
+                dispose();
+            }
+            if (bandera == "Ventas" && fechas == "SI") {
+                cargar_grilla();
+                exportarExcel(grilla_ventas);
+                dispose();
+            }
+            if (bandera == "Cajas" && fechas == "SI") {
+                cargar_grilla();
+                exportarExcel(grilla_cajas);
+                dispose();
+
+            }
+            if (bandera == "Compras" && fechas == "SI") {
+                cargar_grilla();
+                exportarExcel(grilla_compras);
+                dispose();
+
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+    }//GEN-LAST:event_btx_exp_excelActionPerformed
+
+    private void grilla_2AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_grilla_2AncestorAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_grilla_2AncestorAdded
+
+    private void grilla_2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_grilla_2MouseClicked
+        // TODO add your handling code here:}
+    }//GEN-LAST:event_grilla_2MouseClicked
+
+    private void grilla_cajasAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_grilla_cajasAncestorAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_grilla_cajasAncestorAdded
+
+    private void grilla_cajasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_grilla_cajasMouseClicked
+        // TODO add your handling code here:}
+    }//GEN-LAST:event_grilla_cajasMouseClicked
+
+    private void grilla_ventasAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_grilla_ventasAncestorAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_grilla_ventasAncestorAdded
+
+    private void grilla_ventasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_grilla_ventasMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_grilla_ventasMouseClicked
+
+    private void grilla_comprasAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_grilla_comprasAncestorAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_grilla_comprasAncestorAdded
+
+    private void grilla_comprasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_grilla_comprasMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_grilla_comprasMouseClicked
 
     /**
      * @param args the command line arguments
@@ -526,10 +958,16 @@ public class ReporteInventario extends javax.swing.JFrame {
     public String bandera = "";
     public String fechas = "";
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btx_exp_excel;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JFormattedTextField fdesde;
     private javax.swing.JFormattedTextField fhasta;
+    private javax.swing.JTable grilla_2;
+    private javax.swing.JTable grilla_cajas;
+    private javax.swing.JTable grilla_compras;
+    private javax.swing.JTable grilla_inventario;
+    private javax.swing.JTable grilla_ventas;
     private javax.swing.JButton jBgenerar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -538,6 +976,11 @@ public class ReporteInventario extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JRadioButton jr_fecha;
     private javax.swing.JRadioButton radioCajas;
     private javax.swing.JRadioButton radioCompras;
@@ -685,4 +1128,257 @@ public class ReporteInventario extends javax.swing.JFrame {
         }
     }
 
+    private void cargar_grilla() {
+
+        if (bandera == "Inventario") {
+            if (rbTodos.isSelected()) {
+
+                try {
+                    for (int i = grilla_2.getRowCount() - 1; i >= 0; i--) {
+                        cursor.removeRow(i);
+                    }
+
+                    ver_conex conn = new ver_conex();
+                    conn.sentencia = conn.conexion.createStatement();
+                    conn.resultado = conn.sentencia.executeQuery("SELECT P.PRD_COD AS ID, \n"
+                            + "P.BARRA AS CODIGO_BARRA,\n"
+                            + "P.DESCRIPCION AS PRODUCTO,\n"
+                            + "P.COSTO AS COSTO,\n"
+                            + "P.PRECIO_VENTA AS PRECIO_VENTA,\n"
+                            + "REPLACE(ROUND(SP.DISPONIBLE,1),'.0','')  AS DISPONIBLE \n"
+                            + "FROM PRODUCTO P \n"
+                            + "INNER JOIN STOCK_PRODUCTOS SP ON SP.ID_PRODUCTO = P.PRD_COD\n"
+                            + "");
+
+                    while (conn.resultado.next()) {
+                        Object[] datos = {
+                            conn.resultado.getString("ID"),
+                            conn.resultado.getString("CODIGO_BARRA"),
+                            conn.resultado.getString("PRODUCTO"),
+                            conn.resultado.getString("costo"),
+                            conn.resultado.getString("precio_venta"),
+                            conn.resultado.getString("DISPONIBLE"),};
+
+                        cursor.addRow(datos);
+                    }
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(mercaderia.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+            if (rbMenor10.isSelected()) {
+                try {
+                    for (int i = grilla_2.getRowCount() - 1; i >= 0; i--) {
+                        cursor.removeRow(i);
+                    }
+
+                    ver_conex conn = new ver_conex();
+                    conn.sentencia = conn.conexion.createStatement();
+                    conn.resultado = conn.sentencia.executeQuery("SELECT P.PRD_COD AS ID, \n"
+                            + "P.BARRA AS CODIGO_BARRA,\n"
+                            + "P.DESCRIPCION AS PRODUCTO,\n"
+                            + "P.COSTO AS COSTO,\n"
+                            + "P.PRECIO_VENTA AS PRECIO_VENTA,\n"
+                            + "REPLACE(ROUND(SP.DISPONIBLE,1),'.0','')  AS DISPONIBLE \n"
+                            + "FROM PRODUCTO P \n"
+                            + "INNER JOIN STOCK_PRODUCTOS SP ON SP.ID_PRODUCTO = P.PRD_COD\n"
+                            + "WHERE IFNULL(SP.disponible,0) <= 10");
+
+                    while (conn.resultado.next()) {
+                        Object[] datos = {
+                            conn.resultado.getString("ID"),
+                            conn.resultado.getString("CODIGO_BARRA"),
+                            conn.resultado.getString("PRODUCTO"),
+                            conn.resultado.getString("costo"),
+                            conn.resultado.getString("precio_venta"),
+                            conn.resultado.getString("DISPONIBLE"),};
+
+                        cursor.addRow(datos);
+                    }
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(mercaderia.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+        }
+        if (bandera == "Ventas" && fechas == "SI") {
+
+            try {
+                for (int i = grilla_ventas.getRowCount() - 1; i >= 0; i--) {
+                    cursor_ventas.removeRow(i);
+                }
+
+                ver_conex conn = new ver_conex();
+                conn.sentencia = conn.conexion.createStatement();
+                conn.resultado = conn.sentencia.executeQuery("SELECT DISTINCT dv.id_producto,\n"
+                        + "dv.barra_producto,\n"
+                        + "p.descripcion AS producto,\n"
+                        + "REPLACE(ROUND(SUM(dv.cantidad),1),'.0','')   AS cantidad_vendida,\n"
+                        + "p.costo AS costo, \n"
+                        + "1 * REPLACE(REPLACE(ROUND((REPLACE(ROUND(SUM(dv.cantidad),1),'.0','')   * p.costo  ),0),'.0',''),'.',',') AS costo_total,\n"
+                        + "dv.precio_unit AS  precio_unitario,\n"
+                        + "SUM(dv.importe_bruto) AS importe_venta_total,\n"
+                        + "1 *  REPLACE(REPLACE(ROUND((SUM(dv.importe_bruto) - (REPLACE(ROUND(SUM(dv.cantidad),1),'.0','')   * p.costo  )),0),'.0',''),'.',',')  AS ganancia\n"
+                        + "FROM cabecera_ventas cv \n"
+                        + "INNER JOIN detalle_ventas dv ON dv.id_cabecera = cv.id\n"
+                        + "INNER JOIN PRODUCTO p ON p.PRD_COD = DV.ID_PRODUCTO\n"
+                        + "WHERE CONCAT(cv.fecha,' ',hora) BETWEEN CONCAT( '" + tdesde.getText() + "' , '" + fdesde.getText() + "' ) AND CONCAT( '" + thasta.getText() + "' , '" + fhasta.getText() + "' ) \n"
+                        + "GROUP BY dv.id_producto");
+
+                while (conn.resultado.next()) {
+                    Object[] datos = {
+                        conn.resultado.getString("id_producto"),
+                        conn.resultado.getString("barra_producto"),
+                        conn.resultado.getString("PRODUCTO"),
+                        conn.resultado.getString("cantidad_vendida"),
+                        conn.resultado.getString("costo"),
+                        conn.resultado.getString("costo_total"),
+                        conn.resultado.getString("precio_unitario"),
+                        conn.resultado.getString("importe_venta_total"),
+                        conn.resultado.getString("ganancia"),};
+
+                    cursor_ventas.addRow(datos);
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(mercaderia.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+        if (bandera == "Cajas" && fechas == "SI") {
+
+            try {
+                for (int i = grilla_ventas.getRowCount() - 1; i >= 0; i--) {
+                    cursor_cajas.removeRow(i);
+                }
+
+                ver_conex conn = new ver_conex();
+                conn.sentencia = conn.conexion.createStatement();
+                conn.resultado = conn.sentencia.executeQuery("SELECT ac.id AS numero_apertura,ac.fecha_aper AS fecha_apertura,ac.hora_aper AS hora_apertura,\n"
+                        + "ac.id_caja AS caja, ac.monto_aper AS monto_apertura,ac.fecha_cierre AS fecha_cierre,ac.hora_cierre AS hora_cierre,\n"
+                        + "ac.monto_cierre AS monto_cierre, a.fecha AS fecha_arqueo,a.hora AS hora_arqueo, a.efectivo AS importe_rendido,\n"
+                        + "(ac.monto_cierre - a.efectivo) AS Diferencia\n"
+                        + "FROM aper_cierre ac \n"
+                        + "INNER JOIN arqueo a ON a.aper_cod = ac.id\n"
+                        + "WHERE \n"
+                        + "CONCAT(ac.fecha_cierre,' ',ac.hora_cierre) BETWEEN CONCAT( '" + tdesde.getText() + "' , '" + fdesde.getText() + "' ) AND CONCAT( '" + thasta.getText() + "' , '" + fhasta.getText() + "' ) ");
+
+                while (conn.resultado.next()) {
+                    Object[] datos = {
+                        conn.resultado.getString("numero_apertura"),
+                        conn.resultado.getString("fecha_apertura"),
+                        conn.resultado.getString("hora_apertura"),
+                        conn.resultado.getString("caja"),
+                        conn.resultado.getString("monto_apertura"),
+                        conn.resultado.getString("fecha_cierre"),
+                        conn.resultado.getString("hora_cierre"),
+                        conn.resultado.getString("monto_cierre"),
+                        conn.resultado.getString("fecha_arqueo"),
+                        conn.resultado.getString("hora_arqueo"),
+                        conn.resultado.getString("importe_rendido"),
+                        conn.resultado.getString("diferencia"),};
+
+                    cursor_cajas.addRow(datos);
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(mercaderia.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+        if (bandera == "Compras" && fechas == "SI") {
+
+            try {
+                for (int i = grilla_compras.getRowCount() - 1; i >= 0; i--) {
+                    cursor_compras.removeRow(i);
+                }
+
+                ver_conex conn = new ver_conex();
+                conn.sentencia = conn.conexion.createStatement();
+                conn.resultado = conn.sentencia.executeQuery("SELECT \n"
+                        + "STR_TO_DATE(CC.FECHA ,'%d/%m/%Y')AS FECHA,\n"
+                        + "CC.HORA AS HORA,\n"
+                        + "P.BARRA AS CODIGO,\n"
+                        + "P.DESCRIPCION AS PRODUCTO,\n"
+                        + "DC.PRECIO AS COSTO,\n"
+                        + "REPLACE(ROUND(DC.CANTIDAD,1),'.0','')  AS CANTIDAD,\n"
+                        + "1 * REPLACE(ROUND(DC.PRECIO * DC.CANTIDAD,0),'.0','')  AS IMPORTE_TOTAL\n"
+                        + "FROM CABECERA_COMPRAS CC \n"
+                        + "INNER JOIN DETALLE_COMPRAS DC ON CC.ID = DC.ID_CABECERA\n"
+                        + "INNER JOIN PRODUCTO P ON DC.ID_PRODUCTO = P.PRD_COD\n"
+                        + "WHERE CONCAT(STR_TO_DATE(CC.FECHA ,'%d/%m/%Y') , ' ', CC.HORA) >=  CONCAT( '" + tdesde.getText() + "' , '" + fdesde.getText() + "' ) \n"
+                        + "AND   CONCAT(STR_TO_DATE(CC.FECHA ,'%d/%m/%Y')  , ' ', CC.HORA) <=  CONCAT( '" + thasta.getText() + "' , '" + fhasta.getText() + "' )");
+
+                while (conn.resultado.next()) {
+                    Object[] datos = {
+                        conn.resultado.getString("fecha"),
+                        conn.resultado.getString("hora"),
+                        conn.resultado.getString("codigo"),
+                        conn.resultado.getString("producto"),
+                        conn.resultado.getString("costo"),
+                        conn.resultado.getString("cantidad"),
+                        conn.resultado.getString("importe_total"),};
+
+                    cursor_compras.addRow(datos);
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(mercaderia.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }
+
+    public void exportarExcel(JTable t) throws Exception {
+        JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de excel", "xls");
+        chooser.setFileFilter(filter);
+        chooser.setDialogTitle("Guardar archivo");
+        chooser.setAcceptAllFileFilterUsed(false);
+        if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            String ruta = chooser.getSelectedFile().toString().concat(".xls");
+            try {
+                File archivoXLS = new File(ruta);
+                if (archivoXLS.exists()) {
+                    archivoXLS.delete();
+                }
+                archivoXLS.createNewFile();
+                HSSFWorkbook libro = new HSSFWorkbook();
+                FileOutputStream archivo = new FileOutputStream(archivoXLS);
+                HSSFSheet hoja = libro.createSheet("Mi hoja de trabajo 1");
+                hoja.setDisplayGridlines(false);
+                for (int f = 0; f < t.getRowCount(); f++) {
+                    HSSFRow fila = hoja.createRow(f);
+                    for (int c = 0; c < t.getColumnCount(); c++) {
+                        HSSFCell celda = fila.createCell((short) c);
+                        if (f == 0) {
+                            celda.setCellValue(t.getColumnName(c));
+                        }
+                    }
+                }
+                int filaInicio = 1;
+                for (int f = 0; f < t.getRowCount(); f++) {
+                    HSSFRow fila = hoja.createRow(filaInicio);
+                    filaInicio++;
+                    for (int c = 0; c < t.getColumnCount(); c++) {
+                        HSSFCell celda = fila.createCell((short) c);
+                        if (t.getValueAt(f, c) instanceof Double) {
+                            celda.setCellValue(Double.parseDouble(t.getValueAt(f, c).toString()));
+                        } else if (t.getValueAt(f, c) instanceof Float) {
+                            celda.setCellValue(Float.parseFloat((String) t.getValueAt(f, c)));
+                        } else {
+                            celda.setCellValue(String.valueOf(t.getValueAt(f, c)));
+                        }
+                    }
+                }
+                libro.write(archivo);
+                archivo.close();
+                Desktop.getDesktop().open(archivoXLS);
+            } catch (IOException | NumberFormatException e) {
+                throw e;
+            }
+        }
+    }
 }

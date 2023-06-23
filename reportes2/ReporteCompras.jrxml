@@ -26,6 +26,7 @@
 	<queryString>
 		<![CDATA[SELECT 
 STR_TO_DATE(CC.FECHA ,'%d/%m/%Y')AS FECHA,
+CC.NRO_FACTURA,
 CC.HORA AS HORA,
 P.BARRA AS CODIGO,
 P.DESCRIPCION AS PRODUCTO,
@@ -40,6 +41,10 @@ AND   CONCAT(STR_TO_DATE(CC.FECHA ,'%d/%m/%Y')  , ' ', CC.HORA) <=  CONCAT( $P{f
 	</queryString>
 	<field name="FECHA" class="java.sql.Date">
 		<property name="com.jaspersoft.studio.field.label" value="FECHA"/>
+	</field>
+	<field name="NRO_FACTURA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NRO_FACTURA"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cabecera_compras"/>
 	</field>
 	<field name="HORA" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="HORA"/>
@@ -73,7 +78,7 @@ AND   CONCAT(STR_TO_DATE(CC.FECHA ,'%d/%m/%Y')  , ' ', CC.HORA) <=  CONCAT( $P{f
 	<title>
 		<band height="79" splitType="Stretch">
 			<staticText>
-				<reportElement x="10" y="10" width="970" height="69" forecolor="#009999" backcolor="#99FFFF" uuid="b02cdcab-4f2e-4be0-9381-3308b66a7cce"/>
+				<reportElement x="10" y="10" width="560" height="69" forecolor="#009999" backcolor="#99FFFF" uuid="b02cdcab-4f2e-4be0-9381-3308b66a7cce"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="44"/>
 				</textElement>
@@ -104,7 +109,7 @@ AND   CONCAT(STR_TO_DATE(CC.FECHA ,'%d/%m/%Y')  , ' ', CC.HORA) <=  CONCAT( $P{f
 	<columnHeader>
 		<band height="35" splitType="Stretch">
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="0" width="80" height="35" forecolor="#FFFFFF" backcolor="#006666" uuid="e6a751a3-feed-4bf3-9bd7-d4b87440b4f9"/>
+				<reportElement mode="Opaque" x="0" y="0" width="70" height="35" forecolor="#FFFFFF" backcolor="#006666" uuid="e6a751a3-feed-4bf3-9bd7-d4b87440b4f9"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#FFFFFF"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#FFFFFF"/>
@@ -118,7 +123,7 @@ AND   CONCAT(STR_TO_DATE(CC.FECHA ,'%d/%m/%Y')  , ' ', CC.HORA) <=  CONCAT( $P{f
 				<text><![CDATA[Fecha]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="80" y="0" width="80" height="35" forecolor="#FFFFFF" backcolor="#006666" uuid="86d9829f-a2de-4860-b355-7e884624d885"/>
+				<reportElement mode="Opaque" x="160" y="0" width="90" height="35" forecolor="#FFFFFF" backcolor="#006666" uuid="86d9829f-a2de-4860-b355-7e884624d885"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#FFFFFF"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#FFFFFF"/>
@@ -132,7 +137,7 @@ AND   CONCAT(STR_TO_DATE(CC.FECHA ,'%d/%m/%Y')  , ' ', CC.HORA) <=  CONCAT( $P{f
 				<text><![CDATA[Codigo de Barras]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="160" y="0" width="190" height="35" forecolor="#FFFFFF" backcolor="#006666" uuid="f3e0c58f-24bb-440a-99e9-87fc16b18fd1"/>
+				<reportElement mode="Opaque" x="250" y="0" width="140" height="35" forecolor="#FFFFFF" backcolor="#006666" uuid="f3e0c58f-24bb-440a-99e9-87fc16b18fd1"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#FFFFFF"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#FFFFFF"/>
@@ -146,7 +151,7 @@ AND   CONCAT(STR_TO_DATE(CC.FECHA ,'%d/%m/%Y')  , ' ', CC.HORA) <=  CONCAT( $P{f
 				<text><![CDATA[Producto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="350" y="0" width="70" height="35" forecolor="#FFFFFF" backcolor="#006666" uuid="2305bb36-5f22-42a7-860d-e8b409541b1b"/>
+				<reportElement mode="Opaque" x="390" y="0" width="70" height="35" forecolor="#FFFFFF" backcolor="#006666" uuid="2305bb36-5f22-42a7-860d-e8b409541b1b"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#FFFFFF"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#FFFFFF"/>
@@ -160,7 +165,7 @@ AND   CONCAT(STR_TO_DATE(CC.FECHA ,'%d/%m/%Y')  , ' ', CC.HORA) <=  CONCAT( $P{f
 				<text><![CDATA[Costo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="420" y="0" width="60" height="35" forecolor="#FFFFFF" backcolor="#006666" uuid="36870cc0-96e6-49ac-911d-a0faca7abfc6"/>
+				<reportElement mode="Opaque" x="460" y="0" width="50" height="35" forecolor="#FFFFFF" backcolor="#006666" uuid="36870cc0-96e6-49ac-911d-a0faca7abfc6"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#FFFFFF"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#FFFFFF"/>
@@ -174,7 +179,7 @@ AND   CONCAT(STR_TO_DATE(CC.FECHA ,'%d/%m/%Y')  , ' ', CC.HORA) <=  CONCAT( $P{f
 				<text><![CDATA[Cantidad]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="480" y="0" width="100" height="35" forecolor="#FFFFFF" backcolor="#006666" uuid="8f541c2b-d8f4-4a3b-9283-bb97c274a020"/>
+				<reportElement mode="Opaque" x="510" y="0" width="70" height="35" forecolor="#FFFFFF" backcolor="#006666" uuid="8f541c2b-d8f4-4a3b-9283-bb97c274a020"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#FFFFFF"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#FFFFFF"/>
@@ -187,12 +192,27 @@ AND   CONCAT(STR_TO_DATE(CC.FECHA ,'%d/%m/%Y')  , ' ', CC.HORA) <=  CONCAT( $P{f
 				</textElement>
 				<text><![CDATA[Importe Total]]></text>
 			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="70" y="0" width="90" height="35" forecolor="#FFFFFF" backcolor="#006666" uuid="a1d65ca1-8df8-4519-b5dd-d1b17fad9a8a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="cc65b590-3ed4-4c43-8bc1-a2b7a4bb3911"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nro. Factura]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="30" splitType="Stretch">
 			<textField pattern="dd/MM/YYYY">
-				<reportElement x="0" y="0" width="80" height="30" uuid="5a0c546a-41d4-459a-9dd7-f460b999503e">
+				<reportElement x="0" y="0" width="70" height="30" uuid="5a0c546a-41d4-459a-9dd7-f460b999503e">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="544f855f-7f8f-42b7-a06a-f688eff5839d"/>
 				</reportElement>
 				<box>
@@ -205,7 +225,7 @@ AND   CONCAT(STR_TO_DATE(CC.FECHA ,'%d/%m/%Y')  , ' ', CC.HORA) <=  CONCAT( $P{f
 				<textFieldExpression><![CDATA[$F{FECHA}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="80" y="0" width="80" height="30" uuid="3c7e88e5-592b-4f1c-aeb5-e86618c2faf9">
+				<reportElement x="160" y="0" width="90" height="30" uuid="3c7e88e5-592b-4f1c-aeb5-e86618c2faf9">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="54eea37e-42e8-458d-beca-8381f9e4f5d6"/>
 				</reportElement>
 				<box>
@@ -218,7 +238,7 @@ AND   CONCAT(STR_TO_DATE(CC.FECHA ,'%d/%m/%Y')  , ' ', CC.HORA) <=  CONCAT( $P{f
 				<textFieldExpression><![CDATA[$F{CODIGO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="160" y="0" width="190" height="30" uuid="1400d1ed-30ad-4945-ad4a-035587766945">
+				<reportElement x="250" y="0" width="140" height="30" uuid="1400d1ed-30ad-4945-ad4a-035587766945">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dc334b99-2547-43be-befa-c147749a83d5"/>
 				</reportElement>
 				<box>
@@ -231,7 +251,7 @@ AND   CONCAT(STR_TO_DATE(CC.FECHA ,'%d/%m/%Y')  , ' ', CC.HORA) <=  CONCAT( $P{f
 				<textFieldExpression><![CDATA[$F{PRODUCTO}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
-				<reportElement x="350" y="0" width="70" height="30" uuid="3c9d6c80-ac01-47c7-93f7-165a0f1dbb7a">
+				<reportElement x="390" y="0" width="70" height="30" uuid="3c9d6c80-ac01-47c7-93f7-165a0f1dbb7a">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="53899ffb-13c8-4a6a-9e8c-666cefa2d0ea"/>
 				</reportElement>
 				<box>
@@ -244,7 +264,7 @@ AND   CONCAT(STR_TO_DATE(CC.FECHA ,'%d/%m/%Y')  , ' ', CC.HORA) <=  CONCAT( $P{f
 				<textFieldExpression><![CDATA[$F{COSTO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="420" y="0" width="60" height="30" uuid="87aa0047-814a-4a61-b895-d33422a1a9e3">
+				<reportElement x="460" y="0" width="50" height="30" uuid="87aa0047-814a-4a61-b895-d33422a1a9e3">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e72ef196-9584-4439-a649-8d8b4e506099"/>
 				</reportElement>
 				<box>
@@ -257,7 +277,7 @@ AND   CONCAT(STR_TO_DATE(CC.FECHA ,'%d/%m/%Y')  , ' ', CC.HORA) <=  CONCAT( $P{f
 				<textFieldExpression><![CDATA[$F{CANTIDAD}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
-				<reportElement x="480" y="0" width="100" height="30" uuid="8e8816d6-1c79-4065-a2b3-4d97e555130c">
+				<reportElement x="510" y="0" width="70" height="30" uuid="8e8816d6-1c79-4065-a2b3-4d97e555130c">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="768dd030-d710-4111-9adb-5110cac52a6f"/>
 				</reportElement>
 				<box>
@@ -269,6 +289,19 @@ AND   CONCAT(STR_TO_DATE(CC.FECHA ,'%d/%m/%Y')  , ' ', CC.HORA) <=  CONCAT( $P{f
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{IMPORTE_TOTAL}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="70" y="0" width="90" height="30" uuid="50f405ac-477f-44da-9822-4cbf63e4a92e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="cc65b590-3ed4-4c43-8bc1-a2b7a4bb3911"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NRO_FACTURA}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<pageFooter>
@@ -277,14 +310,14 @@ AND   CONCAT(STR_TO_DATE(CC.FECHA ,'%d/%m/%Y')  , ' ', CC.HORA) <=  CONCAT( $P{f
 	<summary>
 		<band height="30">
 			<staticText>
-				<reportElement x="201" y="0" width="82" height="20" uuid="340e7fe7-e8d3-4207-bce6-9f0d33591b54"/>
+				<reportElement x="240" y="0" width="140" height="20" uuid="340e7fe7-e8d3-4207-bce6-9f0d33591b54"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[TOTALES:]]></text>
 			</staticText>
 			<textField pattern="###0">
-				<reportElement x="480" y="0" width="100" height="30" uuid="7facf582-a08a-40c1-9bfc-106825d108c3"/>
+				<reportElement x="510" y="0" width="70" height="30" uuid="7facf582-a08a-40c1-9bfc-106825d108c3"/>
 				<textFieldExpression><![CDATA[$V{IMPORTE_TOTAL1}]]></textFieldExpression>
 			</textField>
 		</band>

@@ -28,6 +28,7 @@ import programas.ver_conex;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import org.apache.log4j.LogManager;
 
 /**
  *
@@ -44,6 +45,8 @@ public class cobros extends javax.swing.JFrame {
     private int band = 0;
     int id_detalle;
 
+    private static final org.apache.log4j.Logger LOG = LogManager.getLogger(cobros.class);
+
     /**
      * Creates new form cobros
      *
@@ -59,7 +62,6 @@ public class cobros extends javax.swing.JFrame {
         cajero.setText(menupri.usucodigo.getText());//codigo usuario
         buscar_cajero();
         ComboCaja();
-
         factura_num();
         fecha();
         gencod();
@@ -67,6 +69,7 @@ public class cobros extends javax.swing.JFrame {
         barra.setEnabled(true);
         barra.requestFocus();
         //cursor = (javax.swing.table.DefaultTableModel)grilla.getModel();
+
     }
 
     @SuppressWarnings("unchecked")
@@ -376,6 +379,11 @@ public class cobros extends javax.swing.JFrame {
         grillacobro.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         unimed_nomb.setEditable(false);
+        unimed_nomb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                unimed_nombActionPerformed(evt);
+            }
+        });
 
         barra.setEnabled(false);
         barra.addActionListener(new java.awt.event.ActionListener() {
@@ -814,10 +822,6 @@ public class cobros extends javax.swing.JFrame {
         {
             JTextField[] tfParam = new JTextField[5];
             tfParam[0] = this.facturanum;
-            //            tfParam[1] = this.jTextField1;
-            //     tfParam[2] = this.tarjenum;
-            //          tfParam[3] = this.jTextField10;
-            //tfParam[4] = this.jTextField11;
 
             VentanaBuscar buscador = new VentanaBuscar("SELECT ventas.ven_cod,ventas.cli_ruc,clientes.cli_nom,clientes.cli_ape,ventas.vent_monto,ventas.estado FROM ventas,clientes WHERE ventas.cli_ruc=clientes.cli_ruc AND ventas.estado='P' AND ventas.ven_cod LIKE  ", new String[]{"FACTURA N°", "RUC", "NOMBRE", "APELLIDO", "MONTO", "ESTADO"}, 6, tfParam);
             buscador.setTitle("Buscar CARGO");
@@ -840,7 +844,7 @@ public class cobros extends javax.swing.JFrame {
         {
             JTextField[] tfParam = new JTextField[2];
             tfParam[0] = this.barra;
-            VentanaBuscar buscador = new VentanaBuscar("SELECT BARRA,UPPER(descripcion)AS descripcion\n"
+            VentanaBuscar buscador = new VentanaBuscar("SELECT BARRA, concat(UPPER(descripcion), '  -  ' , precio_venta) AS descripcion \n"
                     + "FROM producto where descripcion like  ", new String[]{"CODIGO PRODUCTO", "NOMBRE PRODUCTO"}, 2, tfParam);
             buscador.setTitle("Buscar PRODUCTOS");
             buscador.setVisible(true);
@@ -873,9 +877,7 @@ public class cobros extends javax.swing.JFrame {
 
     private void bborrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bborrarActionPerformed
         // TODO add your handling code here:DefaultTableModel dtm = (DefaultTableModel) jTableProducto.getModel(); //TableProducto es el nombre de mi tabla ;)
-        // DefaultTableModel dtm = (DefaultTableModel) grillacobro.getModel(); //TableProducto es el nombre de mi tabla ;) 
-        // dtm.removeRow(grillacobro.getSelectedRow()); 
-        // cursor.removeRow(grillacobro.getSelectedRow());
+
         sumarColumna();
         eliminarPedido();
     }//GEN-LAST:event_bborrarActionPerformed
@@ -886,13 +888,7 @@ public class cobros extends javax.swing.JFrame {
 
     private void cantidKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cantidKeyTyped
         // TODO add your handling code here:
-//         char caracter = evt.getKeyChar();
-//        if(((caracter < '0') ||
-//        (caracter > '9')) &&
-//        (caracter != evt.VK_BACK_SPACE))
-//        {
-//            evt.consume();
-//        }
+
     }//GEN-LAST:event_cantidKeyTyped
 
     private void BGravarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BGravarKeyPressed
@@ -903,6 +899,10 @@ public class cobros extends javax.swing.JFrame {
         // TODO add your handling code here:
 
     }//GEN-LAST:event_BGravarKeyTyped
+
+    private void unimed_nombActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unimed_nombActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_unimed_nombActionPerformed
 
     /**
      * @param args the command line arguments
@@ -954,22 +954,6 @@ public class cobros extends javax.swing.JFrame {
         });
     }
 
-    /*  private void total_abonado() {AD
- //       int totalabo = Integer.parseInt(efectivo.getText());
-  //      monto.setText(String.valueOf(totalabo));
-   //     if (Integer.parseInt(monto.getText()) > Integer.parseInt(monto.getText())) {
-   //         cambio.setText(String.valueOf(Integer.parseInt(monto.getText()) - Integer.parseInt(monto.getText())));
-       } else {
-            cambio.setText("0");
-        }
-    }*/
-
- /*   private void habilitargrabar() {
-        if (Integer.parseInt(monto.getText()) >= Integer.parseInt(monto.getText())) {
-//  grabar.setEnabled(true);
-        }
-    }
-     */
     private void gencod() {
         try {
 
@@ -1036,20 +1020,7 @@ public class cobros extends javax.swing.JFrame {
         }
     }
 
-    private void buscarCliente() {
-        try {
 
-            conn.sentencia = conn.conexion.createStatement();
-            conn.resultado = conn.sentencia.executeQuery("SELECT IFNULL(MAX(id),0)+1 AS newcod ,CURDATE() AS fecha FROM cabecera_ventas");
-            conn.resultado.next();
-            //this.jTextcod
-            fecha.setText(conn.resultado.getString("fecha"));
-            cobnro.setText(conn.resultado.getString("newcod"));
-        } //fin generar
-        catch (SQLException ex) {
-            //   Logger.getLogger(facturacion.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
     private void numaper() {
         try {
@@ -1065,14 +1036,6 @@ public class cobros extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, exceptionSql.getMessage(), "Error de Conexion con la Base de Datos", JOptionPane.ERROR_MESSAGE);
             System.exit(0);
         }
-    }
-
-    private void des_botones() {
-
-    }
-
-    private void hab_botones() {
-
     }
 
     private void clear_text() {
@@ -1097,6 +1060,7 @@ public class cobros extends javax.swing.JFrame {
 
                 String valorCodigo = String.valueOf(grillacobro.getValueAt(fila, 2));
                 //               ajustar_saldo(valorCodigo.toString());
+
                 if (asociado > 0) {
                     if (Integer.parseInt((String) grillacobro.getValueAt(fila, 7)) > saldo) {
                         suma_saldo = contenido + saldo;
@@ -1115,15 +1079,17 @@ public class cobros extends javax.swing.JFrame {
 
             }
             //generarArchivo();
-             generarTicketVenta();
+            cargarEstado();
+            if (imprimir == 1) {
+                generarTicketVenta();
+            }
             //   JOptionPane.showMessageDialog(null, "REGISTRO GRABADO", "CONFIRMACION", JOptionPane.INFORMATION_MESSAGE);
 
             gencod();
             limpiargrilla();
 
         } catch (SQLException ex) {
-            Logger.getLogger(ciudad.class
-                    .getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
         }
 
     }
@@ -1146,6 +1112,8 @@ public class cobros extends javax.swing.JFrame {
     public int asociado = 0;
     public int suma_saldo = 0;
     public int valor_final_saldo = 0;
+    public int imprimir;
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BGravar;
@@ -1245,7 +1213,7 @@ public class cobros extends javax.swing.JFrame {
             ver_conex conn = new ver_conex();
             conn.sentencia = conn.conexion.createStatement();
             conn.resultado = conn.sentencia.executeQuery("SELECT  p.barra,p.prd_cod,p.descripcion,"
-                    + "p.precio_venta,udm.unid_cod,udm.unid_desc,p.saldo,p.contenido\n"
+                    + "p.precio_venta,udm.unid_cod,udm.unid_desc\n"
                     + "                    FROM producto p\n"
                     + "                    INNER JOIN unidad_medida udm ON p.unid_cod =udm.unid_cod \n"
                     + "                    WHERE  p.barra = " + this.barra.getText());
@@ -1257,16 +1225,32 @@ public class cobros extends javax.swing.JFrame {
                 this.unimed_cod.setText(conn.resultado.getString("unid_cod"));
                 this.unimed_nomb.setText(conn.resultado.getString("unid_desc"));
                 this.precio.setText(conn.resultado.getString("precio_venta"));
-                saldo = Integer.parseInt(conn.resultado.getString("saldo"));
-                contenido = Integer.parseInt(conn.resultado.getString("contenido"));
+                //   saldo = Integer.parseInt(conn.resultado.getString("saldo"));
+                //   contenido = Integer.parseInt(conn.resultado.getString("contenido"));
                 //iva = conn.resultado.getString("imp_cod");
                 this.IDproduc.setEnabled(false);
-                this.cantid.setEnabled(true);
-                this.cantid.requestFocus();
 
-                precio.setEnabled(true);
-                IDproduc.setEnabled(false);
-                barra.setEnabled(false);
+                if (this.unimed_cod.getText().equals("1")) {
+                    cantid.setText("1");
+
+                    
+                    //sumarColumna();
+
+                    precio.setEnabled(false);
+                    IDproduc.setEnabled(false);
+
+                    //this.barra.setEnabled(true);
+                    this.cantid.setEnabled(true);
+                    this.cantid.requestFocus();
+                }
+                if (this.unimed_cod.getText().equals("2")) {
+                    this.cantid.setEnabled(true);
+                    this.cantid.requestFocus();
+
+                    precio.setEnabled(true);
+                    IDproduc.setEnabled(false);
+                    barra.setEnabled(false);
+                }
 
             } else//no encontro
             {
@@ -1320,7 +1304,7 @@ public class cobros extends javax.swing.JFrame {
                 c++;
                 DefaultTableModel dt;
                 dt = (DefaultTableModel) grillacobro.getModel();
-                String campos[] = new String[]{String.valueOf(c), IDproduc.getText(), barra.getText(), produdesc.getText(), unimed_cod.getText(), unimed_nomb.getText(), precio.getText(), cantid.getText(), (String.valueOf(Float.parseFloat(precio.getText()) * Float.parseFloat(cantid.getText()))).replace(".0", "")};//cantid
+                String campos[] = new String[]{String.valueOf(c), IDproduc.getText(), barra.getText(), produdesc.getText(), unimed_cod.getText(), unimed_nomb.getText(), precio.getText(), cantid.getText(), (String.valueOf(Float.parseFloat(precio.getText()) * Float.parseFloat(cantid.getText()))).replace(".0001", "").replace(".0002", "").replace(".0003", "").replace(".0004", "").replace(".0005", "").replace(".0006", "").replace(".0007", "").replace(".0008", "").replace(".0009", "").replace(".0", "")};//cantid
                 dt.addRow(campos);
             } while (conn.resultado.next());
         } catch (NumberFormatException | SQLException e) {
@@ -1333,6 +1317,7 @@ public class cobros extends javax.swing.JFrame {
         produdesc.setText("");
         precio.setText("");
         barra.setText("");
+        IDproduc.setText("");
     }
 
     private void limpiar() {
@@ -1516,35 +1501,34 @@ public class cobros extends javax.swing.JFrame {
             FileWriter file = new FileWriter("C:/Fichero/fichero.txt");
 
             // armamos el ticket
-            file.write("           Despensa Morales");
-            file.write("\n    Ramos generales Anexo Bodega ");
+            file.write("             Panaderia ");
+            file.write("\n        Cynthia Carolina ");
             file.write("\n--------------------------------------");
             file.write("\nNro: " + String.format("%07d", Integer.parseInt(cobnro.getText())) + " Cajero: " + String.format("%-8s", cajenomb.getText()).substring(0, 8) + " Caja: " + String.format("%02d", Integer.parseInt(cajanum.getText())));
             file.write("\nFecha :" + String.format("%-13s", fecha.getText()) + " Hora: " + String.format("%-11s", txthora.getText()));
             file.write("\n______________________________________");
             file.write("\nCódigo        Descripción");
             file.write("\nCantidad      Precio Unitario  Importe");
-            file.write("\n______________________________________");
-            file.write("\n--------------------------------------" );
-         
+            file.write("\n--------------------------------------");
+
             // agregamos los detalles 
             for (int i = 0; i < this.grillacobro.getRowCount(); i++) {
-                file.write("\n"+ String.format("%-13s"  ,grillacobro.getValueAt(i, 2).toString()) +" "+ String.format("%-24s", grillacobro.getValueAt(i, 3).toString()).substring(0,24) );
-                file.write("\nCant:"+ String.format("%-9s"  ,grillacobro.getValueAt(i, 7).toString()) +" Unit:"+ String.format("%-10s"  ,grillacobro.getValueAt(i, 6).toString()) + String.format("%-7s"  ,grillacobro.getValueAt(i, 8).toString()));
+                file.write("\n" + String.format("%-13s", grillacobro.getValueAt(i, 2).toString()) + " " + String.format("%-24s", grillacobro.getValueAt(i, 3).toString()).substring(0, 24));
+                file.write("\nCant:" + String.format("%-9s", grillacobro.getValueAt(i, 7).toString()) + " Unit:" + String.format("%-10s", grillacobro.getValueAt(i, 6).toString()) + String.format("%-7s", grillacobro.getValueAt(i, 8).toString()));
             }
 
             DecimalFormat formatea = new DecimalFormat("###,###.##");
             // agregamos los importes 
-           file.write("\n______________________________________");
-           file.write("\n         Importe Total:    " + String.format("%-8s"  ,formatea.format(Double.parseDouble(Total.getText().toString()))));
-           file.write("\n         Monto Pagado:     " + String.format("%-8s"  ,formatea.format(Double.parseDouble(txtpagado.getText().toString()))));
-           file.write("\n         Vuelto:           " + String.format("%-8s"  ,formatea.format(Double.parseDouble(txtcambio122233.getText().toString()))));
-           file.write("\n--------------------------------------" );
-           // agregamos el pie de pagina
-           file.write("\n    Gracias por su preferencia.!!!    " );
-           file.write("\n   *Este documento no tiene validez   " );
-           file.write("\n  legal, favor solicitar su factura.  " );
-           
+            file.write("\n______________________________________");
+            file.write("\n         Importe Total:    " + String.format("%-8s", formatea.format(Double.parseDouble(Total.getText().toString()))));
+            file.write("\n         Monto Pagado:     " + String.format("%-8s", formatea.format(Double.parseDouble(txtpagado.getText().toString()))));
+            file.write("\n         Vuelto:           " + String.format("%-8s", formatea.format(Double.parseDouble(txtcambio122233.getText().toString()))));
+            file.write("\n--------------------------------------");
+            // agregamos el pie de pagina
+            file.write("\n    Gracias por su preferencia.!!!    ");
+            file.write("\n   *Este documento no tiene validez   ");
+            file.write("\n  legal, favor solicitar su factura.  ");
+
             file.close();
 
             // imprimir el archivo generado
@@ -1553,12 +1537,31 @@ public class cobros extends javax.swing.JFrame {
             // obtenemos el archivo a imprimir
             java.io.File fichero = new java.io.File("C:/Fichero/fichero.txt");
 
-      
-                   desktop.print(fichero);
+            desktop.print(fichero);
 
         } catch (Exception e) {
             System.out.println("excepcion :" + e);
         }
     }
 
+    private void cargarEstado() {
+        try {
+            // Main.inicio = "no";
+            ver_conex conn = new ver_conex();
+            conn.sentencia = conn.conexion.createStatement();
+            conn.resultado = conn.sentencia.executeQuery("SELECT * "
+                    + "\n"
+                    + "FROM imprimir where estado = 1");
+            boolean encontro = conn.resultado.next();
+
+            if (encontro == true) {
+                imprimir = 1;
+            } else {
+                imprimir = 0;
+            }
+        } catch (SQLException ex) {
+
+        }
+
+    }
 }

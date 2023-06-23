@@ -1206,7 +1206,7 @@ public class Conversiones extends javax.swing.JFrame {
                 gencod();
                 conn.sentencia.executeUpdate("INSERT INTO cabecera_conv(id,fecha,hora,usuario) "
                         + "values(" + txtcodigo.getText() + ",'" + fechas.getText() + "','" + txthora.getText() + "'," + txtcodper.getText() + ")");
-
+ 
                 gencodDetalle();
                 //graba en el detalle
 

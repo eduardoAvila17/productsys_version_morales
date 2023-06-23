@@ -80,6 +80,9 @@ public class Productos extends javax.swing.JFrame {
         chkActivo = new javax.swing.JCheckBox();
         lcosto2 = new javax.swing.JLabel();
         disponible_salon = new javax.swing.JTextField();
+        unid_cod = new javax.swing.JTextField();
+        unidadMedida = new javax.swing.JLabel();
+        unidadMedidaDesc = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -190,15 +193,24 @@ public class Productos extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Id", "Codigo  Barra", "Descripcion", "Costo", "Precio Venta", "Estado"
+                "Id", "Codigo  Barra", "Descripcion", "Costo", "Precio Venta", "Udm", "Estado"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        grilla.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                grillaAncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
             }
         });
         grilla.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -318,6 +330,33 @@ public class Productos extends javax.swing.JFrame {
             }
         });
 
+        unid_cod.setEnabled(false);
+        unid_cod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                unid_codActionPerformed(evt);
+            }
+        });
+        unid_cod.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                unid_codKeyTyped(evt);
+            }
+        });
+
+        unidadMedida.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        unidadMedida.setText("UdM:");
+
+        unidadMedidaDesc.setEnabled(false);
+        unidadMedidaDesc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                unidadMedidaDescActionPerformed(evt);
+            }
+        });
+        unidadMedidaDesc.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                unidadMedidaDescKeyTyped(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -330,11 +369,7 @@ public class Productos extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(descripcion))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(lcosto2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(disponible_salon, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGap(2, 2, 2)
                                 .addComponent(lcodigo1)
@@ -355,7 +390,17 @@ public class Productos extends javax.swing.JFrame {
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(lcodigo2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(chkActivo)))
+                                .addComponent(chkActivo))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(lcosto2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(disponible_salon, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(unidadMedida)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(unid_cod, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(unidadMedidaDesc)))
                         .addGap(0, 47, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -383,7 +428,11 @@ public class Productos extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lcosto2)
-                    .addComponent(disponible_salon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(disponible_salon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(unidadMedida)
+                        .addComponent(unid_cod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(unidadMedidaDesc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lcodigo2)
@@ -413,11 +462,11 @@ public class Productos extends javax.swing.JFrame {
                 .addGap(22, 22, 22)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(17, Short.MAX_VALUE))
         );
@@ -544,7 +593,7 @@ public class Productos extends javax.swing.JFrame {
         // TODO add your handling code here:
         disponible_salon.setEnabled(true);
         disponible_salon.requestFocus();
-     
+
 
     }//GEN-LAST:event_precio_ventaActionPerformed
 
@@ -566,7 +615,9 @@ public class Productos extends javax.swing.JFrame {
 
     private void disponible_salonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_disponible_salonActionPerformed
         // TODO add your handling code here:
-        chkActivo.setEnabled(true);
+        unid_cod.setEnabled(true);
+        unid_cod.requestFocus();
+
     }//GEN-LAST:event_disponible_salonActionPerformed
 
     private void disponible_salonKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_disponible_salonKeyTyped
@@ -588,6 +639,28 @@ public class Productos extends javax.swing.JFrame {
             evt.consume();
         }
     }//GEN-LAST:event_txtbarraKeyTyped
+
+    private void grillaAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_grillaAncestorAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_grillaAncestorAdded
+
+    private void unid_codActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unid_codActionPerformed
+        // TODO add your handling code here:
+        buscarUnidad();
+        chkActivo.setEnabled(true);
+    }//GEN-LAST:event_unid_codActionPerformed
+
+    private void unid_codKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_unid_codKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_unid_codKeyTyped
+
+    private void unidadMedidaDescActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unidadMedidaDescActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_unidadMedidaDescActionPerformed
+
+    private void unidadMedidaDescKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_unidadMedidaDescKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_unidadMedidaDescKeyTyped
 
     /**
      * @param args the command line arguments
@@ -629,7 +702,7 @@ public class Productos extends javax.swing.JFrame {
     public int valorBase;
     public int saldo = 0;
     public int contenido = 0;
-    public int cod_asociado  = 0;
+    public int cod_asociado = 0;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bagregar;
     private javax.swing.JButton bcancelar;
@@ -656,6 +729,9 @@ public class Productos extends javax.swing.JFrame {
     private javax.swing.JTextField precio_venta;
     private javax.swing.JTextField txtbarra;
     private javax.swing.JTextField txtcodigo;
+    private javax.swing.JTextField unid_cod;
+    private javax.swing.JLabel unidadMedida;
+    private javax.swing.JTextField unidadMedidaDesc;
     // End of variables declaration//GEN-END:variables
 
     private void des_text() {
@@ -665,16 +741,18 @@ public class Productos extends javax.swing.JFrame {
         precio_venta.setEnabled(false);
         chkActivo.setEnabled(false);
         disponible_salon.setEnabled(false);
+        unid_cod.setEnabled(false);
+        unidadMedidaDesc.setEnabled(false);
 
     }
 
-   
     private void borrar_text() {
         txtcodigo.setText("");
         txtbarra.setText("");
         descripcion.setText("");
-
         costo.setText("");
+        unid_cod.setText("");
+        unidadMedidaDesc.setText("");
         precio_venta.setText("");
         disponible_salon.setText("");
         chkActivo.setSelected(false);
@@ -729,22 +807,23 @@ public class Productos extends javax.swing.JFrame {
                 if (chkActivo.isSelected() == true) {
                     estado = 1;
                 }
-                
+
                 gencod();// sirve para que no se dupliquen los codigos y no de error cuando se trabaja en redes///////////////////////////////////////////////////prd_cod,////////////////tip_prd_cod,/////////presen_cod,/////////////mar_cod,/////////////unid_cod,/////////////prd_nom,//////////////////prd_costo,/////////////iva,////matp_est,//////   grup_cod
-                conn.sentencia.executeUpdate("INSERT INTO producto(prd_cod,tip_prd_cod,presen_cod,mar_cod,unid_cod,descripcion,costo,iva,estado,barra,precio_venta,saldo,contenido,asociado)values(" + txtcodigo.getText() + "," + 1 + "," + 1 + "," + 1 + "," + 1 + ",'" + descripcion.getText() + "'," + costo.getText() + "," + 1 + "," + estado + "," + txtbarra.getText() + "," + precio_venta.getText() + "," + saldo + "," + contenido + "," + cod_asociado + ")");
-                conn.sentencia.executeUpdate("INSERT INTO stock_productos (ID,ID_PRODUCTO,PLU_PRODUCTO,DISPONIBLE,ESTADO,pack)VALUES(" + id_stock + "," + txtcodigo.getText() + "," + txtbarra.getText() + "," + disponible_salon.getText() + ",1," + 0 + ")");
+                conn.sentencia.executeUpdate("INSERT INTO producto(prd_cod,tip_prd_cod,presen_cod,mar_cod,unid_cod,descripcion,costo,iva,estado,barra,precio_venta)values(" + txtcodigo.getText() + "," + 1 + "," + 1 + "," + 1 + "," + unid_cod.getText() + ",'" + descripcion.getText() + "'," + costo.getText() + "," + 1 + "," + estado + "," + txtbarra.getText() + "," + precio_venta.getText() + ")");
+                conn.sentencia.executeUpdate("INSERT INTO stock_productos(ID,ID_PRODUCTO,PLU_PRODUCTO,DISPONIBLE,ESTADO)VALUES"
+                        + "(" + id_stock + "," + txtcodigo.getText() + "," + txtbarra.getText() + "," + disponible_salon.getText() + " ,' 1 ') ");
                 cargar_grilla();
             }
             if (bandera.equals("editar")) {
                 if (chkActivo.isSelected() == true) {
                     estado = 1;
                 }
-                    saldo = Integer.parseInt(disponible_salon.getText());
-                    conn.sentencia.executeUpdate("UPDATE producto SET barra ='" + txtbarra.getText() + "',descripcion='" + descripcion.getText() + "', costo='" + costo.getText() + "' ,precio_venta='" + precio_venta.getText() + "',estado=" + estado + " ,contenido= " + contenido + " ,asociado= " + cod_asociado + " , saldo= " + saldo + " WHERE prd_cod =" + txtcodigo.getText());
+                saldo = Integer.parseInt(disponible_salon.getText());
+                conn.sentencia.executeUpdate("UPDATE producto SET barra ='" + txtbarra.getText() + "',descripcion='" + descripcion.getText() + "',unid_cod='" + unid_cod.getText() + "', costo='" + costo.getText() + "' ,precio_venta='" + precio_venta.getText() + "',estado=" + estado + " WHERE prd_cod =" + txtcodigo.getText());
 
                 int valor_stock = 0;
 
-                conn.sentencia.executeUpdate("UPDATE stock_productos SET pack =  " + valor_stock + ",disponible =" + disponible_salon.getText() + " where id_producto = " + txtcodigo.getText() + "");
+                conn.sentencia.executeUpdate("UPDATE stock_productos SET disponible =" + disponible_salon.getText() + " where id_producto = " + txtcodigo.getText() + "");
                 //  conn.sentencia.executeUpdate("UPDATE producto SET descripcion = '" + descripcion.getText() + "', costo =  " + costo.getText() + ", estado = " +estado+ ",barra = " + txtbarra.getText() + ", precio_venta ="+ precio_venta +" WHERE barra ="+ txtbarra.getText());
                 cargar_grilla();
             }
@@ -771,10 +850,11 @@ public class Productos extends javax.swing.JFrame {
             // Main.inicio = "no";
             ver_conex conn = new ver_conex();
             conn.sentencia = conn.conexion.createStatement();
-            conn.resultado = conn.sentencia.executeQuery("SELECT p.*,sp.disponible"
+            conn.resultado = conn.sentencia.executeQuery("SELECT p.*,sp.disponible , um.unid_desc as unidadMedida"
                     + "\n"
                     + "FROM producto p \n"
                     + "INNER JOIN stock_productos sp ON sp.id_producto = p.prd_cod\n"
+                    + "INNER JOIN unidad_medida um ON p.unid_cod = um.unid_cod\n"
                     + "WHERE p.barra  = " + txtbarra.getText());
             boolean encontro = conn.resultado.next();
 
@@ -795,7 +875,9 @@ public class Productos extends javax.swing.JFrame {
                 costo.setText(conn.resultado.getString("costo"));
                 precio_venta.setText(conn.resultado.getString("precio_venta"));
                 disponible_salon.setText(conn.resultado.getString("disponible"));
-              
+                unid_cod.setText(conn.resultado.getString("unid_cod"));
+                unidadMedidaDesc.setText(conn.resultado.getString("unidadMedida"));
+
                 this.valorBase = (Integer.parseInt(conn.resultado.getString("estado")));
 
                 if (valorBase == 1) {
@@ -829,7 +911,7 @@ public class Productos extends javax.swing.JFrame {
 
             ver_conex conn = new ver_conex();
             conn.sentencia = conn.conexion.createStatement();
-            conn.resultado = conn.sentencia.executeQuery("SELECT * from producto");
+            conn.resultado = conn.sentencia.executeQuery("SELECT * from producto p inner join unidad_medida  um on um.unid_cod = p.unid_cod");
 
             while (conn.resultado.next()) {
                 Object[] datos = {
@@ -838,8 +920,8 @@ public class Productos extends javax.swing.JFrame {
                     conn.resultado.getString("descripcion"),
                     conn.resultado.getString("costo"),
                     conn.resultado.getString("precio_venta"),
+                    conn.resultado.getString("unid_desc"),
                     conn.resultado.getString("estado"),};
-
                 cursor.addRow(datos);
             }
 
@@ -869,7 +951,6 @@ public class Productos extends javax.swing.JFrame {
         }
     }
 
-
     public void convertiraMayusculasEnJtextfield(javax.swing.JTextField jTextfieldS) {
         String cadena = (jTextfieldS.getText()).toUpperCase();
         jTextfieldS.setText(cadena);
@@ -882,10 +963,36 @@ public class Productos extends javax.swing.JFrame {
 
         bgrabar.setEnabled(true);
         bsalir.setEnabled(false);
+
         bcancelar.setEnabled(true);
         txtbarra.setEnabled(true);
         txtbarra.requestFocus();
     }
 
- 
+    public void buscarUnidad() {
+        try {
+
+            conn.sentencia = conn.conexion.createStatement();
+            conn.resultado = conn.sentencia.executeQuery("SELECT unid_desc \n"
+                    + "FROM unidad_medida\n"
+                    + "WHERE unid_cod = " + this.unid_cod.getText());
+
+            if (conn.resultado.next())//si encontro
+            {
+                this.unidadMedidaDesc.setText(conn.resultado.getString("unid_desc"));
+
+                //   this.txtdepdescri.setText(conn.resultado.getString("depo_desc"));
+            } else//no encontro
+            {
+                JOptionPane.showMessageDialog(null, "El codigo ingresado aun no esta Registrado");
+                unid_cod.requestFocus();
+
+            }
+
+        } catch (SQLException exceptionSql) {
+            //   JOptionPane.showMessageDialog(null, exceptionSql.getMessage(), "Error de Conexion con la Base de Datos", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }
+
 }
